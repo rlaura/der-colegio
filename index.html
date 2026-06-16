@@ -575,15 +575,32 @@ Por eso, antes de construir un DER es necesario interpretar el significado del t
   </div>
 
   <div class="print-box">
-    <p>¿Querés guardar tu trabajo? </p>
-    <button class="btn-naranja" onclick="window.print()"><i class="ti ti-printer"></i> Guardar PDF</button>
+    <div>
+      <p style="font-weight:600;color:var(--text);margin-bottom:6px">¡Último paso!</p>
+      <ol style="font-size:13px;color:var(--text2);line-height:2;padding-left:18px">
+        <li>Hacé clic en <strong>"Guardar como PDF"</strong></li>
+        <li>En la ventana que se abre, elegí <strong>Guardar como PDF</strong> (no imprimir)</li>
+        <li>Nombrá el archivo con tu nombre y apellido</li>
+        <li>Subilo a la tarea en <strong>Google Classroom</strong></li>
+      </ol>
+    </div>
+    <button class="btn-naranja" onclick="window.print()" style="white-space:nowrap;align-self:center"><i class="ti ti-printer"></i> Guardar como PDF</button>
+  </div>
+  <div style="margin-top:.8rem;background:var(--verde-claro);border:0.5px solid var(--verde-borde);border-radius:var(--radius-sm);padding:12px 16px;font-size:13px;color:var(--verde-txt);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:8px">
+      <i class="ti ti-brand-google" style="font-size:20px;flex-shrink:0"></i>
+      <span>Subí el PDF a la tarea <strong>"DER — Objeto de Aprendizaje"</strong> en Google Classroom</span>
+    </div>
+    <a href="https://classroom.google.com" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--verde);color:#fff;border-radius:var(--radius-sm);font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap">
+      <i class="ti ti-external-link"></i> Ir al Classroom
+    </a>
   </div>
 </div>
 
 <script>
 // ---- NAVEGACIÓN ----
-const UNLOCKED=[true,false,false,false,false,false];
-//const UNLOCKED=[true,true,true,true,true,true];
+//const UNLOCKED=[true,false,false,false,false,false];
+const UNLOCKED=[true,true,true,true,true,true];
 
 
 function goSection(n){
