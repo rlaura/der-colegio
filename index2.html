@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DER — Técnica 1 Computación</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css"/>
+    <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --verde:#1a4d2e;--verde-medio:#2d7a47;--verde-claro:#d4edda;--verde-borde:#6aab7e;--verde-txt:#0f2d1a;
+      --naranja:#e87722;--naranja-claro:#fdecd8;--naranja-borde:#f5a96a;--naranja-txt:#7a3a08;
+      --rojo:#A32D2D;--rojo-claro:#FCEBEB;--rojo-borde:#F09595;--rojo-txt:#791F1F;
+      --crema:#faf8f3;--crema2:#f0ede4;--crema3:#e8e3d8;
+      --text:#1e1e1a;--text2:#5a5550;--border:#d5d0c8;--border2:#b8b2a8;
+      --radius:10px;--radius-sm:6px;
+    }
+    body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--crema);color:var(--text);padding:20px;max-width:900px;margin:0 auto}
+
+    /* HEADER */
+    .header{display:flex;align-items:center;gap:14px;padding:13px 16px;background:var(--verde);border-radius:var(--radius);margin-bottom:1rem;position:relative;overflow:hidden}
+    .hb{position:absolute;opacity:.12;z-index:1}
+    .header-text{position:relative;z-index:2}
+    .header-title{font-size:15px;font-weight:600;color:#fff}
+    .header-sub{font-size:12px;color:#a8d5b5;margin-top:2px}
+    .header-badge{position:relative;z-index:2;background:var(--naranja);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:700;color:#fff;margin-left:auto}
+
+    /* NAV */
+    .nav{display:flex;gap:3px;margin-bottom:1rem;flex-wrap:wrap}
+    .nav-btn{padding:6px 10px;border-radius:var(--radius-sm);border:0.5px solid var(--border);background:#fff;font-size:11px;font-weight:500;cursor:pointer;color:var(--text2);display:flex;align-items:center;gap:4px;transition:all .15s;white-space:nowrap}
+    .nav-btn.active{border-color:var(--verde-borde);background:var(--verde-claro);color:var(--verde-txt)}
+    .nav-btn.locked{opacity:.4;cursor:not-allowed}
+    .nav-btn.done{border-color:var(--naranja-borde);background:var(--naranja-claro);color:var(--naranja-txt)}
+    .nav-btn i{font-size:13px}
+    .section{display:none}.section.visible{display:block}
+
+    /* HERO */
+    .hero{background:linear-gradient(135deg,var(--verde) 0%,var(--verde-medio) 100%);border-radius:var(--radius);padding:28px 24px;margin-bottom:1rem;color:#fff;position:relative;overflow:hidden}
+    .hero-bear{position:absolute;right:-10px;top:-18px;opacity:.1}
+    .hero h1{font-size:20px;font-weight:600;margin-bottom:8px;position:relative;z-index:2}
+    .hero p{font-size:13px;line-height:1.7;color:#b8dfc4;position:relative;z-index:2;max-width:620px}
+    .objetivos{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px;position:relative;z-index:2}
+    .obj{background:rgba(255,255,255,.1);border:0.5px solid rgba(255,255,255,.2);border-radius:var(--radius-sm);padding:10px 12px;font-size:12px;color:#d4f0de;display:flex;gap:8px;align-items:flex-start}
+    .obj i{font-size:15px;flex-shrink:0;margin-top:1px;color:var(--naranja)}
+    .ruta{display:flex;gap:6px;flex-wrap:wrap;margin-top:1rem;position:relative;z-index:2}
+    .ruta-item{background:#2d7a47;border:0.5px solid rgba(255,255,255,.2);border-radius:20px;padding:4px 10px;font-size:11px;color:#b8dfc4;display:flex;align-items:center;gap:4px}
+    .ruta-item i{color:var(--naranja)}
+    .btn-start{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:var(--naranja);border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;color:#fff;margin-top:16px;position:relative;z-index:2}
+    .btn-start:hover{background:#c9640e}
+
+    /* TEORÍA */
+    .momento-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+    .momento-sub{font-size:12px;color:var(--text2);margin-bottom:1rem}
+    .concepto-big{display:flex;flex-direction:column;gap:10px;margin-bottom:1rem}
+    .concepto-card{border-radius:var(--radius);border:0.5px solid var(--border);padding:16px;display:grid;grid-template-columns:56px 1fr;gap:14px;align-items:start}
+    .concepto-card.entidad{border-color:var(--verde-borde);background:var(--verde-claro)}
+    .concepto-card.relacion{border-color:var(--naranja-borde);background:var(--naranja-claro)}
+    .concepto-card.atributo{border-color:var(--border);background:#fff}
+    .concepto-simbolo{display:flex;flex-direction:column;align-items:center;gap:4px}
+    .sim-rect{width:44px;height:26px;border:2px solid var(--verde);border-radius:4px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:var(--verde-txt)}
+    .sim-diamond{width:34px;height:34px;border:2px solid var(--naranja-borde);background:#fff;transform:rotate(45deg);display:flex;align-items:center;justify-content:center}
+    .sim-diamond span{transform:rotate(-45deg);font-size:8px;font-weight:600;color:var(--naranja-txt)}
+    .sim-ellipse{width:44px;height:24px;border:2px solid var(--border2);border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:600;color:var(--text2)}
+    .sim-label{font-size:9px;color:var(--text2);text-align:center;margin-top:4px}
+    .concepto-info h3{font-size:13px;font-weight:600;margin-bottom:4px}
+    .concepto-card.entidad .concepto-info h3{color:var(--verde-txt)}
+    .concepto-card.relacion .concepto-info h3{color:var(--naranja-txt)}
+    .concepto-card.atributo .concepto-info h3{color:var(--text)}
+    .concepto-info p{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:6px}
+    .ejemplos{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+    .ejemplo-tag{padding:2px 8px;border-radius:20px;font-size:11px;border:0.5px solid}
+    .entidad .ejemplo-tag{background:#fff;border-color:var(--verde-borde);color:var(--verde-txt)}
+    .relacion .ejemplo-tag{background:#fff;border-color:var(--naranja-borde);color:var(--naranja-txt)}
+    .atributo .ejemplo-tag{background:var(--crema2);border-color:var(--border2);color:var(--text2)}
+    .der-ejemplo{border:0.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:1rem;background:#fff}
+    .der-ejemplo-title{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em;display:flex;align-items:center;gap:6px}
+    .der-preview{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;padding:8px 0}
+    .der-rect{background:var(--verde-claro);border:2px solid var(--verde-borde);border-radius:6px;padding:8px 14px;font-size:12px;font-weight:600;color:var(--verde-txt)}
+    .der-diamond-wrap{display:flex;flex-direction:column;align-items:center}
+    .der-diamond{width:50px;height:50px;background:var(--naranja-claro);border:2px solid var(--naranja-borde);transform:rotate(45deg);display:flex;align-items:center;justify-content:center}
+    .der-diamond span{transform:rotate(-45deg);font-size:9px;font-weight:500;color:var(--naranja-txt);text-align:center;max-width:40px;line-height:1.2}
+    .der-line{width:20px;height:2px;background:var(--verde-borde)}
+    .der-attrs{display:flex;flex-direction:column;gap:4px;margin-top:4px}
+    .der-attr{background:var(--crema2);border:1.5px solid var(--border2);border-radius:20px;padding:2px 10px;font-size:10px;color:var(--text2);text-align:center}
+
+    /* ACTIVIDAD */
+    .steps-row{display:flex;gap:8px;margin-bottom:1rem}
+    .step-btn{flex:1;padding:9px 12px;border-radius:var(--radius-sm);border:1.5px solid var(--border);background:#fff;font-size:12px;font-weight:500;cursor:pointer;color:var(--text2);display:flex;align-items:center;gap:6px;transition:all .15s}
+    .step-btn.active{border-color:var(--verde-borde);background:var(--verde-claro);color:var(--verde-txt)}
+    .step-btn.done{border-color:var(--naranja-borde);background:var(--naranja-claro);color:var(--naranja-txt)}
+    .step-btn.locked{opacity:.45;cursor:not-allowed}
+    .enunciado{background:var(--crema2);border:0.5px solid var(--border);border-left:3px solid var(--verde);border-radius:var(--radius-sm);padding:14px 16px;font-size:13px;color:var(--text);line-height:1.7;margin-bottom:1rem}
+    .consigna{font-size:12px;color:var(--text2);margin-top:8px;padding-top:8px;border-top:0.5px solid var(--border)}
+    .two-col{display:grid;grid-template-columns:1fr 210px;gap:10px;margin-bottom:1rem}
+    .canvas-wrap{border:1.5px dashed var(--border);border-radius:var(--radius);min-height:300px;position:relative;background:#fff;overflow:hidden}
+    .canvas-wrap.drag-over{background:var(--verde-claro)}
+    .canvas-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;pointer-events:none;opacity:.4}
+    .canvas-empty i{font-size:26px;color:var(--text2)}
+    .canvas-empty p{font-size:12px;color:var(--text2)}
+    .sidebar{display:flex;flex-direction:column;gap:8px}
+    .side-section{border:0.5px solid var(--border);border-radius:var(--radius-sm);padding:10px;background:#fff}
+    .side-label{font-size:11px;color:var(--text2);margin-bottom:7px;text-transform:uppercase;letter-spacing:.04em}
+    .side-items{display:flex;flex-direction:column;gap:5px;min-height:28px}
+    .chip{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:var(--radius-sm);font-size:12px;cursor:grab;user-select:none;border:0.5px solid;transition:transform .1s}
+    .chip:hover{transform:scale(1.02)}.chip.dragging{opacity:.4}
+    .chip-entidad{background:var(--verde-claro);border-color:var(--verde-borde);color:var(--verde-txt)}
+    .chip-relacion{background:var(--naranja-claro);border-color:var(--naranja-borde);color:var(--naranja-txt)}
+    .chip-attr{background:var(--crema2);border-color:var(--border2);color:var(--text2)}
+    .chip i{font-size:13px}
+    .canvas-node{position:absolute;cursor:move;user-select:none;display:flex;flex-direction:column;align-items:center;gap:3px}
+    .node-entity{background:var(--verde-claro);border:2px solid var(--verde-borde);border-radius:var(--radius-sm);padding:8px 14px;font-size:13px;font-weight:600;color:var(--verde-txt);white-space:nowrap}
+    .node-relation{background:var(--naranja-claro);border:2px solid var(--naranja-borde);transform:rotate(45deg);width:60px;height:60px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--naranja-txt)}
+    .node-relation-text{transform:rotate(-45deg);text-align:center;line-height:1.2;max-width:52px}
+    .node-delete{position:absolute;top:-6px;right:-6px;width:16px;height:16px;border-radius:50%;background:var(--rojo);border:none;cursor:pointer;display:none;align-items:center;justify-content:center;color:#fff;font-size:10px;line-height:1}
+    .canvas-node:hover .node-delete{display:flex}
+    .legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:.8rem}
+    .leg{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
+    .leg-box{width:14px;height:14px;border-radius:3px;flex-shrink:0}
+    .cuentito{background:var(--verde-claro);border:0.5px solid var(--verde-borde);border-radius:var(--radius-sm);padding:12px 16px;font-size:13px;color:var(--verde-txt);line-height:1.7;margin-top:.8rem;display:none}
+    .story-box{background:var(--naranja-claro);border:0.5px solid var(--naranja-borde);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;color:var(--naranja-txt);margin-bottom:1rem;display:flex;gap:8px;align-items:flex-start}
+    .story-box i{font-size:16px;margin-top:1px;flex-shrink:0}
+    .step2-target{border:1.5px dashed var(--naranja-borde);border-radius:var(--radius-sm);min-height:36px;padding:4px 6px;display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;transition:background .15s;width:150px}
+    .step2-target.drag-over{background:var(--naranja-claro)}
+    .step2-node{background:var(--verde-claro);border:2px solid var(--verde-borde);border-radius:var(--radius-sm);padding:10px 14px;font-size:13px;font-weight:600;color:var(--verde-txt);text-align:center;margin-bottom:4px}
+    .step2-wrap{display:flex;flex-direction:column;align-items:center}
+    .actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.5rem}
+    .btn-primary{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;background:var(--verde);border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;color:#fff}
+    .btn-primary:hover{background:var(--verde-medio)}
+    .btn-secondary{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;background:#fff;border:1px solid var(--border2);border-radius:var(--radius-sm);font-size:13px;cursor:pointer;color:var(--text2)}
+    .btn-secondary:hover{background:var(--crema2)}
+    .btn-naranja{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;background:var(--naranja);border:none;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;color:#fff}
+    .btn-naranja:hover{background:#c9640e}
+    .feedback{padding:9px 13px;border-radius:var(--radius-sm);font-size:13px;display:none;margin-top:.5rem}
+    .feedback.show{display:block}
+    .feedback.ok{background:var(--verde-claro);color:var(--verde-txt);border:0.5px solid var(--verde-borde)}
+    .feedback.warn{background:var(--naranja-claro);color:var(--naranja-txt);border:0.5px solid var(--naranja-borde)}
+
+    /* PRODUCCIÓN */
+    .prod-section{margin-bottom:1rem}
+    .prod-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:.5rem;display:flex;align-items:center;gap:7px}
+    .entidad-block{border:0.5px solid var(--verde-borde);border-radius:var(--radius);padding:14px;margin-bottom:10px;background:var(--verde-claro)}
+    .entidad-block h4{font-size:13px;font-weight:600;color:var(--verde-txt);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+    .entidad-input{width:100%;border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;font-size:13px;background:#fff;color:var(--text);margin-bottom:8px;font-family:inherit}
+    .entidad-input:focus{outline:2px solid var(--verde-borde);outline-offset:1px}
+    textarea.entidad-input{resize:vertical;min-height:60px}
+    .attr-row{display:flex;gap:6px;margin-bottom:6px;align-items:center}
+    .attr-row input{flex:1;border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 8px;font-size:12px;background:#fff;color:var(--text);font-family:inherit}
+    .attr-row input:focus{outline:2px solid var(--verde-borde);outline-offset:1px}
+    .btn-add-attr{padding:4px 10px;background:var(--crema2);border:1px solid var(--border2);border-radius:var(--radius-sm);font-size:11px;cursor:pointer;color:var(--text2);display:flex;align-items:center;gap:4px}
+    .btn-add-attr:hover{background:var(--crema3)}
+
+    /* EVALUACIÓN */
+    .quiz-q{margin-bottom:1.2rem;padding:14px;border:0.5px solid var(--border);border-radius:var(--radius);background:#fff}
+    .quiz-q p{font-size:13px;font-weight:500;color:var(--text);margin-bottom:10px}
+    .quiz-options{display:flex;flex-direction:column;gap:6px}
+    .quiz-opt{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;font-size:13px;color:var(--text);transition:all .15s;background:#fff}
+    .quiz-opt:hover{border-color:var(--verde-borde);background:var(--verde-claro)}
+    .quiz-opt.selected{border-color:var(--verde-borde);background:var(--verde-claro);color:var(--verde-txt)}
+    .quiz-opt.correct{border-color:var(--verde-borde);background:var(--verde-claro);color:var(--verde-txt)}
+    .quiz-opt.wrong{border-color:var(--rojo-borde);background:var(--rojo-claro);color:var(--rojo-txt)}
+    .quiz-opt input[type=radio]{margin-top:2px;accent-color:var(--verde);flex-shrink:0}
+    .quiz-result{font-size:12px;margin-top:8px;padding:6px 10px;border-radius:var(--radius-sm);display:none}
+    .quiz-result.ok{background:var(--verde-claro);color:var(--verde-txt);border:0.5px solid var(--verde-borde);display:block}
+    .quiz-result.err{background:var(--rojo-claro);color:var(--rojo-txt);border:0.5px solid var(--rojo-borde);display:block}
+    .quiz-score{font-size:16px;font-weight:600;color:var(--verde-txt);text-align:center;padding:16px;background:var(--verde-claro);border-radius:var(--radius);margin-top:1rem;display:none}
+
+    /* METACOGNICIÓN */
+    .meta-q{margin-bottom:1rem}
+    .meta-q label{font-size:13px;font-weight:500;color:var(--text);display:block;margin-bottom:6px}
+    .meta-q textarea{width:100%;border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;font-size:13px;background:#fff;color:var(--text);resize:vertical;min-height:70px;font-family:inherit}
+    .meta-q textarea:focus{outline:2px solid var(--verde-borde);outline-offset:1px}
+    .stars{display:flex;gap:6px;margin-top:4px}
+    .star{font-size:22px;cursor:pointer;color:var(--border2);transition:color .1s}
+    .star.active{color:var(--naranja)}
+
+    /* PRINT */
+    .print-box{border:0.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;background:var(--crema2);display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:1rem}
+    .print-box p{font-size:13px;color:var(--text2)}
+    @media print{
+      .nav,.btn-start,.btn-primary,.btn-secondary,.btn-naranja,.actions,.print-box,.instrucciones-nav{display:none!important}
+      .section{display:block!important}
+      body{padding:10px;background:#fff}
+    }
+    .nav-next{display:flex;justify-content:flex-end;margin-top:1rem}
+  </style>
+</head>
+<body>
+
+<div class="header" style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px">
+  <svg class="hb" style="right:-8px;top:-16px" width="90" height="90" viewBox="0 0 110 110"><circle cx="55" cy="55" r="50" fill="none" stroke="#fff" stroke-width="5"/><circle cx="55" cy="55" r="34" fill="none" stroke="#fff" stroke-width="5"/><circle cx="55" cy="55" r="10" fill="none" stroke="#fff" stroke-width="4"/><circle cx="55" cy="12" r="7" fill="#fff"/><circle cx="55" cy="98" r="7" fill="#fff"/><circle cx="12" cy="55" r="7" fill="#fff"/><circle cx="98" cy="55" r="7" fill="#fff"/><circle cx="22" cy="22" r="6" fill="#fff"/><circle cx="88" cy="22" r="6" fill="#fff"/><circle cx="22" cy="88" r="6" fill="#fff"/><circle cx="88" cy="88" r="6" fill="#fff"/></svg>
+  <svg class="hb" style="right:55px;bottom:-15px" width="70" height="70" viewBox="0 0 88 88"><circle cx="44" cy="44" r="39" fill="none" stroke="#fff" stroke-width="4.5"/><circle cx="44" cy="44" r="26" fill="none" stroke="#fff" stroke-width="4.5"/><circle cx="44" cy="44" r="8" fill="none" stroke="#fff" stroke-width="3.5"/><circle cx="44" cy="7" r="6" fill="#fff"/><circle cx="44" cy="81" r="6" fill="#fff"/><circle cx="7" cy="44" r="6" fill="#fff"/><circle cx="81" cy="44" r="6" fill="#fff"/><circle cx="17" cy="17" r="5" fill="#fff"/><circle cx="71" cy="17" r="5" fill="#fff"/><circle cx="17" cy="71" r="5" fill="#fff"/><circle cx="71" cy="71" r="5" fill="#fff"/></svg>
+  <!-- IZQUIERDA: institución -->
+  <div style="position:relative;z-index:2">
+    <div style="font-size:15px;font-weight:600;color:#fff">Técnica 1</div>
+    <div style="font-size:11px;color:#a8d5b5;margin-top:2px">4.° Año · Orientación Computación</div>
+  </div>
+  <!-- CENTRO: materia -->
+  <div style="position:relative;z-index:2;text-align:center">
+    <div style="font-size:11px;color:#a8d5b5;text-transform:uppercase;letter-spacing:.06em;font-weight:500;margin-bottom:3px">Base de Datos</div>
+    <div style="background:var(--naranja);border-radius:6px;padding:4px 16px;font-size:13px;font-weight:700;color:#fff;display:inline-block">DER</div>
+  </div>
+  <!-- DERECHA: fecha siempre visible, nombre aparece al empezar -->
+  <div style="position:relative;z-index:2;text-align:right">
+    <div id="header-nombre" style="font-size:13px;font-weight:600;color:#fff;display:none"></div>
+    <div id="header-fecha" style="font-size:11px;color:#a8d5b5;margin-top:2px"></div>
+  </div>
+</div>
+
+<div class="nav instrucciones-nav">
+  <button class="nav-btn active" id="nav-0" onclick="goSection(0)"><i class="ti ti-home"></i> Inicio</button>
+  <button class="nav-btn locked" id="nav-1" onclick="goSection(1)"><i class="ti ti-book"></i>Teoría</button>
+  <button class="nav-btn locked" id="nav-2" onclick="goSection(2)"><i class="ti ti-topology-star"></i>A construir</button>
+  <button class="nav-btn locked" id="nav-3" onclick="goSection(3)"><i class="ti ti-pencil"></i> Tu turno</button>
+  <button class="nav-btn locked" id="nav-4" onclick="goSection(4)"><i class="ti ti-checkbox"></i> Checkpoint</button>
+  <button class="nav-btn locked" id="nav-5" onclick="goSection(5)"><i class="ti ti-brain"></i> ¿Qué aprendimos?</button>
+</div>
+
+<!-- GRADO CERO -->
+<div class="section visible" id="sec-0">
+  <div class="hero">
+    <svg class="hero-bear" width="160" height="160" viewBox="0 0 110 110"><circle cx="55" cy="55" r="50" fill="none" stroke="#fff" stroke-width="6"/><circle cx="55" cy="55" r="34" fill="none" stroke="#fff" stroke-width="6"/><circle cx="55" cy="55" r="12" fill="none" stroke="#fff" stroke-width="5"/><circle cx="55" cy="9" r="8" fill="#fff"/><circle cx="55" cy="101" r="8" fill="#fff"/><circle cx="9" cy="55" r="8" fill="#fff"/><circle cx="101" cy="55" r="8" fill="#fff"/><circle cx="20" cy="20" r="7" fill="#fff"/><circle cx="90" cy="20" r="7" fill="#fff"/><circle cx="20" cy="90" r="7" fill="#fff"/><circle cx="90" cy="90" r="7" fill="#fff"/></svg>
+
+    <!-- Datos del alumno -->
+    <div id="datos-alumno-print" style="position:relative;z-index:2;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.15)">
+      <div style="font-size:11px;color:#a8d5b5;text-transform:uppercase;letter-spacing:.05em;font-weight:500;margin-bottom:5px">Nombre y apellido</div>
+      <input
+        type="text"
+        id="alumno" autocomplete="name"
+        placeholder="Ingresá tu nombre y apellido"
+        style="width:100%;max-width:380px;padding:8px 12px;border:1.5px solid rgba(255,255,255,.3);border-radius:6px;font-size:13px;background:rgba(255,255,255,.12);color:#fff;outline:none;font-family:inherit"
+        onfocus="this.style.borderColor='rgba(255,255,255,.75)';this.style.background='rgba(255,255,255,.22)'"
+        onblur="this.style.borderColor='rgba(255,255,255,.3)';this.style.background='rgba(255,255,255,.12)'"
+      />
+      <div id="completar" hidden style="margin-top:8px;font-size:12px;color:#ffd6b0;font-weight:500">⚠ Completá tu nombre y apellido para continuar</div>
+      <span id="nombre-pdf" hidden></span>
+    </div>
+
+    <h1>Diagrama Entidad–Relación</h1>
+    <p>En este recorrido vas a conocer qué es un DER, para qué sirve, y cómo construirlo a partir de una situación real. Es una herramienta clave para diseñar bases de datos antes de programarlas.</p>
+
+    <div class="objetivos">
+      <div class="obj"><i class="ti ti-target"></i><span>Identificar entidades, relaciones y atributos a partir de un problema real</span></div>
+      <div class="obj"><i class="ti ti-topology-star"></i><span>Construir un DER y asignar atributos a cada entidad</span></div>
+      <div class="obj"><i class="ti ti-pencil"></i><span>Justificar las decisiones de modelado con argumentos propios</span></div>
+      <div class="obj"><i class="ti ti-brain"></i><span>Reflexionar sobre el propio proceso de aprendizaje</span></div>
+    </div>
+       <button class="btn-start" onclick="empezar()"><i class="ti ti-arrow-right"></i> Empezar</button>
+  </div>
+    <div class="ruta">
+      <div class="ruta-item"><i class="ti ti-book"></i> ¿Qué es? </div>
+      <div class="ruta-item"><i class="ti ti-arrow-right"></i></div>
+      <div class="ruta-item"><i class="ti ti-topology-star"></i> A construir </div>
+      <div class="ruta-item"><i class="ti ti-arrow-right"></i></div>
+      <div class="ruta-item"><i class="ti ti-pencil"></i> Tu turno </div>
+      <div class="ruta-item"><i class="ti ti-arrow-right"></i></div>
+      <div class="ruta-item"><i class="ti ti-checkbox"></i> Checkpoint </div>
+      <div class="ruta-item"><i class="ti ti-arrow-right"></i></div>
+      <div class="ruta-item"><i class="ti ti-brain"></i> ¿Qué aprendimos? </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TEORÍA -->
+<div class="section" id="sec-1">
+  <p class="momento-title"><i class="ti ti-book" style="color:var(--verde)"></i> ¿Qué es un DER?</p>
+  <p class="momento-sub">Un Diagrama Entidad-Relación (DER) modela la estructura de una base de datos <strong>antes</strong> de crearla. Se compone de tres elementos clave:</p>
+  <div class="concepto-big">
+    <div class="concepto-card entidad">
+      <div class="concepto-simbolo"><div class="sim-rect">Dueño</div><div class="sim-label">rectángulo</div></div>
+      <div class="concepto-info">
+        <h3>Entidad</h3>
+        <p>Una "cosa" (persona, objeto, concepto) del mundo real del que el sistema necesita guardar información. Pensala como un sustantivo concreto. Se dibuja como un <strong>rectángulo</strong>.</p>
+        <div class="ejemplos"><span class="ejemplo-tag">Dueño</span><span class="ejemplo-tag">Mascota</span><span class="ejemplo-tag">Producto</span><span class="ejemplo-tag">Médico</span><span class="ejemplo-tag">Factura</span></div>
+        <div><h3>Importante</h3> 
+<p>Al analizar un problema, no siempre vas a encontrar exactamente las mismas palabras que después usarás en el DER. Lo importante es identificar el concepto al que se hace referencia.
+
+Por ejemplo, en un texto pueden aparecer las expresiones alumno o estudiante, profesor o docente, materia o asignatura. Aunque las palabras sean distintas, pueden representar la misma entidad dentro del modelo.
+
+Por eso, antes de construir un DER es necesario interpretar el significado del texto y no limitarse a buscar palabras para copiar al diagrama.</p>
+</div>
+      </div>
+
+    </div>
+    <div class="concepto-card relacion">
+      <div class="concepto-simbolo"><div class="sim-diamond"><span>tiene</span></div><div class="sim-label">rombo</div></div>
+      <div class="concepto-info">
+        <h3>Relación</h3>
+        <p>Cómo se vinculan dos entidades. Pensala como un verbo que conecta dos sustantivos. Se dibuja como un <strong>rombo</strong>.</p>
+        <div class="ejemplos"><span class="ejemplo-tag">tiene</span><span class="ejemplo-tag">atiende</span><span class="ejemplo-tag">compra</span></div>
+      </div>
+    </div>
+    <div class="concepto-card atributo">
+      <div class="concepto-simbolo"><div class="sim-ellipse">Raza</div><div class="sim-label">elipse</div></div>
+      <div class="concepto-info">
+        <h3>Atributo</h3>
+        <p>Una característica que describe a una entidad. Se dibuja como una <strong>elipse</strong> conectada a su entidad.</p>
+        <div class="ejemplos"><span class="ejemplo-tag">Nombre</span><span class="ejemplo-tag">DNI</span><span class="ejemplo-tag">Raza</span><span class="ejemplo-tag">Teléfono</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="der-ejemplo">
+    <div class="der-ejemplo-title"><i class="ti ti-eye"></i> Ejemplo: sistema de una veterinaria</div>
+    <div class="der-preview">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div class="der-rect">Dueño</div>
+        <div class="der-attrs"><div class="der-attr">DNI</div><div class="der-attr">Nombre</div><div class="der-attr">Teléfono</div></div>
+      </div>
+      <div class="der-line"></div>
+      <div class="der-diamond-wrap"><div class="der-diamond"><span>tiene</span></div></div>
+      <div class="der-line"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div class="der-rect">Mascota</div>
+        <div class="der-attrs"><div class="der-attr">Nombre</div><div class="der-attr">Especie</div><div class="der-attr">Raza</div></div>
+      </div>
+      <div class="der-line"></div>
+      <div class="der-diamond-wrap"><div class="der-diamond"><span>es atendida por</span></div></div>
+      <div class="der-line"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div class="der-rect">Veterinario</div>
+        <div class="der-attrs"><div class="der-attr">Matrícula</div><div class="der-attr">Nombre</div><div class="der-attr">Especialidad</div></div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:var(--text2);margin-top:10px;text-align:center">"Un <em>dueño</em> <em>tiene</em> mascotas, que son <em>atendidas por</em> un veterinario."</p>
+  </div>
+  <!-- AUDIO Y VIDEO -->
+  <div style="margin-bottom:1rem;display:flex;flex-direction:column;gap:10px">
+
+    <!-- Audio -->
+    <div style="border:0.5px solid var(--verde-borde);border-radius:var(--radius);padding:14px 16px;background:var(--verde-claro)">
+      <div style="font-size:12px;font-weight:600;color:var(--verde-txt);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px;display:flex;align-items:center;gap:6px">
+        <i class="ti ti-headphones" style="font-size:15px"></i> Audio explicativo
+      </div>
+      <!-- Reemplazá la URL de src con el archivo de audio que quieras usar -->
+      <audio controls style="width:100%;border-radius:6px;accent-color:var(--verde)">
+        <source src="TU_AUDIO.mp3" type="audio/mpeg">
+        Tu navegador no soporta audio HTML5.
+      </audio>
+      <p style="font-size:11px;color:var(--verde-txt);margin-top:8px;opacity:.75">Escuchá esta explicación complementaria sobre los DER antes de continuar.</p>
+    </div>
+
+    <!-- Video YouTube -->
+    <div style="border:0.5px solid var(--naranja-borde);border-radius:var(--radius);padding:14px 16px;background:var(--naranja-claro)">
+      <div style="font-size:12px;font-weight:600;color:var(--naranja-txt);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px;display:flex;align-items:center;gap:6px">
+        <i class="ti ti-brand-youtube" style="font-size:15px"></i> Video de apoyo
+      </div>
+      <!-- Reemplazá el href con el link real de YouTube -->
+      <a href="https://www.youtube.com/watch?v=TU_VIDEO_ID" target="_blank"
+         style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:var(--naranja);border-radius:var(--radius-sm);color:#fff;font-size:13px;font-weight:600;text-decoration:none">
+        <i class="ti ti-player-play" style="font-size:16px"></i> Ver video en YouTube
+      </a>
+      <p style="font-size:11px;color:var(--naranja-txt);margin-top:8px;opacity:.75">Se abre en una nueva pestaña.</p>
+    </div>
+
+  </div>
+
+  <div class="nav-next">
+    <button class="btn-primary" onclick="unlockAndGo(2)"><i class="ti ti-topology-star"></i> Ir a la actividad</button>
+  </div>
+</div>
+
+<!-- ACTIVIDAD -->
+<div class="section" id="sec-2">
+  <div class="steps-row">
+    <button class="step-btn active" id="btn-step1" onclick="goStep(1)"><i class="ti ti-topology-star"></i> Paso 1 — Armá el DER</button>
+    <button class="step-btn locked" id="btn-step2" onclick="tryGoStep2()"><i class="ti ti-lock"></i> Paso 2 — Atributos</button>
+  </div>
+  <div id="panel-step1">
+    <div class="enunciado">
+      <p>La secretaría de un colegio secundario necesita informatizar la gestión académica. Actualmente el seguimiento se hace en papel y genera muchos errores: se pierde información sobre quién cursa qué, y no siempre queda claro qué docente tiene a cargo cada espacio.</p>
+      <p style="margin-top:8px">El colegio cuenta con alumnos que se identifican por su legajo y eligen las materias en las que van a participar. Cada materia, a su vez, es responsabilidad de un docente que la planifica y la evalúa, y cuenta con una especialidad. Además, cada materia pertenece a un año.</p>
+      <div class="consigna"><i class="ti ti-pencil" style="font-size:13px;margin-right:4px"></i>Identificá las entidades y relaciones, y construí el DER. Descartá lo que no corresponda.</div>
+    </div>
+    <div class="legend">
+      <div class="leg"><div class="leg-box" style="background:var(--verde-claro);border:1.5px solid var(--verde-borde)"></div> Entidad</div>
+      <div class="leg"><div class="leg-box" style="background:var(--naranja-claro);border:1.5px solid var(--naranja-borde);transform:rotate(45deg)"></div>&nbsp;&nbsp; Relación</div>
+      <div class="leg"><div class="leg-box" style="background:var(--rojo-claro);border:1.5px solid var(--rojo-borde)"></div> No corresponde</div>
+    </div>
+    <div class="two-col">
+      <div class="canvas-wrap" id="canvas" ondragover="canvasOver(event)" ondragleave="canvasLeave(event)" ondrop="canvasDrop(event)">
+        <div class="canvas-empty" id="canvas-empty"><i class="ti ti-drag-drop"></i><p>Arrastrá elementos acá</p></div>
+        <svg id="svg-lines" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></svg>
+      </div>
+      <div class="sidebar">
+        <div class="side-section"><div class="side-label">Entidades</div><div class="side-items" id="pool-entidades"></div></div>
+        <div class="side-section"><div class="side-label">Relaciones</div><div class="side-items" id="pool-relaciones"></div></div>
+        <div class="side-section"><div class="side-label">No corresponden</div><div class="side-items" id="pool-nope"></div></div>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn-primary" onclick="checkStep1()"><i class="ti ti-check"></i> Verificar</button>
+      <button class="btn-secondary" onclick="resetStep1()"><i class="ti ti-refresh"></i> Reiniciar</button>
+    </div>
+    <div class="feedback" id="fb1"></div>
+    <div class="cuentito" id="cuentito">
+      <strong><i class="ti ti-book" style="font-size:14px;margin-right:4px"></i>¿Cómo se lee el DER?</strong><br>
+      "Los <em>estudiantes</em> se <em>inscriben en</em> <em>asignaturas</em>, que son <em>dictadas por</em> un <em>docente</em>."<br>
+      <span style="font-size:12px;margin-top:4px;display:block;opacity:.8">Cada entidad es algo que el sistema necesita recordar. Cada relación expresa cómo se vinculan.</span>
+    </div>
+  </div>
+  <div id="panel-step2" style="display:none">
+    <div class="story-box"><i class="ti ti-tag"></i><span>Arrastrá cada atributo a la entidad que le corresponde. Hay atributos repetidos — cada uno va a una entidad distinta. Los que no corresponden, ponelos en "No corresponde".</span></div>
+    <div class="legend">
+      <div class="leg"><div class="leg-box" style="background:var(--verde-claro);border:1.5px solid var(--verde-borde)"></div> Entidad</div>
+      <div class="leg"><div class="leg-box" style="background:#f0ede4;border:1.5px solid var(--border2)"></div> Atributo</div>
+    </div>
+    <div class="two-col">
+      <div id="step2-canvas" style="border:1px solid var(--border);border-radius:var(--radius);padding:16px;background:#faf8f3;display:flex;justify-content:space-around;align-items:flex-start;flex-wrap:wrap;gap:16px;min-height:280px"></div>
+      <div class="sidebar"><div class="side-section"><div class="side-label">Atributos</div><div class="side-items" id="pool-attrs"></div></div></div>
+    </div>
+    <div class="actions">
+      <button class="btn-primary" onclick="checkStep2()"><i class="ti ti-check"></i> Verificar</button>
+      <button class="btn-secondary" onclick="resetStep2()"><i class="ti ti-refresh"></i> Reiniciar</button>
+      <button class="btn-secondary" onclick="goStep(1)"><i class="ti ti-arrow-left"></i> Volver</button>
+    </div>
+    <div class="feedback" id="fb2"></div>
+    <div style="margin-top:.8rem">
+      <button id="btn-siguiente-prod" class="btn-primary" style="display:none" onclick="goSection(3)">
+        <i class="ti ti-arrow-right"></i> Ir a Tu turno
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCCIÓN -->
+<div class="section" id="sec-3">
+  <p class="momento-title"><i class="ti ti-pencil" style="color:var(--verde)"></i> Tu turno — Armá tu propio DER</p>
+  <p class="momento-sub">Ahora te toca a vos. Pensá en una situación de tu entorno que se pueda modelar con un DER y creá tu propio diagrama.</p>
+
+  <div style="background:var(--crema2);border:0.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:1.2rem;font-size:13px;color:var(--text2);line-height:1.7">
+    <strong style="color:var(--text)">💡 Algunas ideas para inspirarte:</strong><br>
+    Un <strong>negocio</strong> (almacén, kiosco, peluquería) · Tu <strong>casa</strong> · Una <strong>biblioteca</strong> · Un <strong>club deportivo</strong> · Una <strong>app de música</strong> · Un <strong>hospital</strong> · Lo que se te ocurra a vos.<br>
+    <span style="font-size:12px">Tiene que tener al menos <strong>3 entidades</strong> y <strong>2 relaciones</strong> que se lean como un cuentito con sentido.</span>
+  </div>
+
+  <div class="prod-section">
+    <div class="prod-title"><i class="ti ti-file-description" style="color:var(--verde)"></i> Paso A — Describí tu situación</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:8px">Contá brevemente qué sistema querés modelar. ¿De qué se trata? ¿Qué necesita guardar el sistema?</p>
+    <textarea class="entidad-input" id="prod-situacion" placeholder="Ej: Quiero modelar un kiosco. El sistema tiene que saber qué productos tiene, quiénes son los proveedores y qué pedidos se hicieron..." style="min-height:80px"></textarea>
+  </div>
+
+  <div class="prod-section" style="margin-top:1.2rem">
+    <div class="prod-title"><i class="ti ti-square" style="color:var(--verde)"></i> Paso B — Identificá las entidades</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:10px">¿Cuáles son las 3 entidades de tu sistema? Escribí el nombre de cada una y explicá por qué es una entidad.</p>
+    <p style="font-size:10px;color:var(--text2)">Recordá: una entidad es algo sobre lo que el sistema necesita guardar información de manera permanente.</p>
+    <div id="entidades-list">
+      <div class="entidad-block" id="ent-block-0">
+        <h4><i class="ti ti-square"></i> Entidad 1</h4>
+        <input class="entidad-input" placeholder="Nombre de la entidad (ej: Producto)" id="ent-name-0"/>
+        <textarea class="entidad-input" placeholder="¿Por qué es una entidad? ¿Qué necesita recordar el sistema sobre ella?" id="ent-just-0"></textarea>
+      </div>
+      <div class="entidad-block" id="ent-block-1">
+        <h4><i class="ti ti-square"></i> Entidad 2</h4>
+        <input class="entidad-input" placeholder="Nombre de la entidad (ej: Proveedor)" id="ent-name-1"/>
+        <textarea class="entidad-input" placeholder="¿Por qué es una entidad? ¿Qué necesita recordar el sistema sobre ella?" id="ent-just-1"></textarea>
+      </div>
+      <div class="entidad-block" id="ent-block-2">
+        <h4><i class="ti ti-square"></i> Entidad 3</h4>
+        <input class="entidad-input" placeholder="Nombre de la entidad (ej: Pedido)" id="ent-name-2"/>
+        <textarea class="entidad-input" placeholder="¿Por qué es una entidad? ¿Qué necesita recordar el sistema sobre ella?" id="ent-just-2"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="prod-section" style="margin-top:1.2rem">
+    <div class="prod-title"><i class="ti ti-tag" style="color:var(--naranja)"></i> Paso C — Completá los atributos de cada entidad</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:10px">Para cada entidad, listá los datos que el sistema necesita guardar sobre ella.</p>
+    <div id="attrs-list">
+      <div class="entidad-block" id="attr-block-0" style="border-color:var(--naranja-borde);background:var(--naranja-claro)">
+        <h4 style="color:var(--naranja-txt)"><i class="ti ti-tag"></i> Atributos de: <span id="attr-label-0" style="font-style:italic">(completá el nombre arriba)</span></h4>
+        <div id="attr-rows-0">
+          <div class="attr-row"><input placeholder="Atributo 1" id="attr-0-0"/></div>
+          <div class="attr-row"><input placeholder="Atributo 2" id="attr-0-1"/></div>
+          <div class="attr-row"><input placeholder="Atributo 3" id="attr-0-2"/></div>
+        </div>
+        <button class="btn-add-attr" onclick="addAttr(0)"><i class="ti ti-plus"></i> Agregar atributo</button>
+      </div>
+      <div class="entidad-block" id="attr-block-1" style="border-color:var(--naranja-borde);background:var(--naranja-claro)">
+        <h4 style="color:var(--naranja-txt)"><i class="ti ti-tag"></i> Atributos de: <span id="attr-label-1" style="font-style:italic">(completá el nombre arriba)</span></h4>
+        <div id="attr-rows-1">
+          <div class="attr-row"><input placeholder="Atributo 1" id="attr-1-0"/></div>
+          <div class="attr-row"><input placeholder="Atributo 2" id="attr-1-1"/></div>
+          <div class="attr-row"><input placeholder="Atributo 3" id="attr-1-2"/></div>
+        </div>
+        <button class="btn-add-attr" onclick="addAttr(1)"><i class="ti ti-plus"></i> Agregar atributo</button>
+      </div>
+      <div class="entidad-block" id="attr-block-2" style="border-color:var(--naranja-borde);background:var(--naranja-claro)">
+        <h4 style="color:var(--naranja-txt)"><i class="ti ti-tag"></i> Atributos de: <span id="attr-label-2" style="font-style:italic">(completá el nombre arriba)</span></h4>
+        <div id="attr-rows-2">
+          <div class="attr-row"><input placeholder="Atributo 1" id="attr-2-0"/></div>
+          <div class="attr-row"><input placeholder="Atributo 2" id="attr-2-1"/></div>
+          <div class="attr-row"><input placeholder="Atributo 3" id="attr-2-2"/></div>
+        </div>
+        <button class="btn-add-attr" onclick="addAttr(2)"><i class="ti ti-plus"></i> Agregar atributo</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="prod-section" style="margin-top:1.2rem">
+    <div class="prod-title"><i class="ti ti-diamond" style="color:var(--naranja)"></i> Paso D — Las relaciones</div>
+    <p style="font-size:12px;color:var(--text2);margin-bottom:8px">¿Cómo se vinculan las entidades entre sí? Describí al menos 2 relaciones y cómo se leería el cuentito.</p>
+    <textarea class="entidad-input" id="prod-relaciones" placeholder="Ej: Los productos son suministrados por proveedores. Los proveedores realizan pedidos. El cuentito sería: 'Un proveedor suministra productos y realiza pedidos.'" style="min-height:80px"></textarea>
+  </div>
+
+  <div class="nav-next" style="margin-top:1.5rem">
+    <button class="btn-primary" onclick="validarProduccion()"><i class="ti ti-checkbox"></i> Ir al Checkpoint</button>
+    <div id="fb-prod" class="feedback"></div>
+  </div>
+</div>
+
+<!-- EVALUACIÓN -->
+<div class="section" id="sec-4">
+  <p class="momento-title"><i class="ti ti-checkbox" style="color:var(--verde)"></i> Checkpoint</p>
+  <p class="momento-sub">Respondé las siguientes preguntas. Una vez que las completes, podés ver los resultados y descargar todo en PDF.</p>
+
+  <div id="quiz-container">
+    <div class="quiz-q" id="qq-0">
+      <p>1. ¿Cuál de estas opciones describe mejor qué es una <strong>entidad</strong> en un DER?</p>
+      <div class="quiz-options">
+        <label class="quiz-opt" onclick="selectOpt(0,0)"><input type="radio" name="q0" value="0"> Un proceso que realiza el sistema, como "calcular el total"</label>
+        <label class="quiz-opt" onclick="selectOpt(0,1)"><input type="radio" name="q0" value="1"> Una "cosa" concreta del mundo real sobre la que el sistema necesita guardar información</label>
+        <label class="quiz-opt" onclick="selectOpt(0,2)"><input type="radio" name="q0" value="2"> Un dato que describe a otra cosa, como el nombre o el precio</label>
+        <label class="quiz-opt" onclick="selectOpt(0,3)"><input type="radio" name="q0" value="3"> Una tabla ya creada en la base de datos</label>
+      </div>
+      <div class="quiz-result" id="qr-0"></div>
+    </div>
+    <div class="quiz-q" id="qq-1">
+      <p>2. ¿Cuál de estas opciones es una <strong>relación</strong> válida entre dos entidades?</p>
+      <div class="quiz-options">
+        <label class="quiz-opt" onclick="selectOpt(1,0)"><input type="radio" name="q1" value="0"> Nombre</label>
+        <label class="quiz-opt" onclick="selectOpt(1,1)"><input type="radio" name="q1" value="1"> Cliente</label>
+        <label class="quiz-opt" onclick="selectOpt(1,2)"><input type="radio" name="q1" value="2"> compra</label>
+        <label class="quiz-opt" onclick="selectOpt(1,3)"><input type="radio" name="q1" value="3"> Precio</label>
+      </div>
+      <div class="quiz-result" id="qr-1"></div>
+    </div>
+    <div class="quiz-q" id="qq-2">
+      <p>3. Un alumno quiere modelar una biblioteca. Identificó estas entidades: <em>Libro, Lector, Préstamo, Título</em>. ¿Cuál de ellas <strong>no</strong> debería ser una entidad?</p>
+      <div class="quiz-options">
+        <label class="quiz-opt" onclick="selectOpt(2,0)"><input type="radio" name="q2" value="0"> Libro</label>
+        <label class="quiz-opt" onclick="selectOpt(2,1)"><input type="radio" name="q2" value="1"> Lector</label>
+        <label class="quiz-opt" onclick="selectOpt(2,2)"><input type="radio" name="q2" value="2"> Préstamo</label>
+        <label class="quiz-opt" onclick="selectOpt(2,3)"><input type="radio" name="q2" value="3"> Título</label>
+      </div>
+      <div class="quiz-result" id="qr-2"></div>
+    </div>
+    <div class="quiz-q" id="qq-3">
+      <p>4. ¿Cuál de estas afirmaciones sobre los <strong>atributos</strong> es correcta?</p>
+      <div class="quiz-options">
+        <label class="quiz-opt" onclick="selectOpt(3,0)"><input type="radio" name="q3" value="0"> Cada atributo solo puede existir en una única entidad del DER</label>
+        <label class="quiz-opt" onclick="selectOpt(3,1)"><input type="radio" name="q3" value="1"> Los atributos conectan dos entidades entre sí</label>
+        <label class="quiz-opt" onclick="selectOpt(3,2)"><input type="radio" name="q3" value="2"> Dos entidades distintas pueden tener atributos con el mismo nombre si representan datos propios de cada una</label>
+        <label class="quiz-opt" onclick="selectOpt(3,3)"><input type="radio" name="q3" value="3"> Los atributos se representan con rombos en el diagrama</label>
+      </div>
+      <div class="quiz-result" id="qr-3"></div>
+    </div>
+    <div class="quiz-q" id="qq-4">
+      <p>5. Leé este texto y respondé: <em>"Una veterinaria necesita saber qué mascotas atiende, quiénes son sus dueños y qué veterinarios trabajan ahí."</em><br>¿Cuál de estas opciones es una <strong>relación</strong> correcta para este sistema?</p>
+      <div class="quiz-options">
+        <label class="quiz-opt" onclick="selectOpt(4,0)"><input type="radio" name="q4" value="0"> Mascota</label>
+        <label class="quiz-opt" onclick="selectOpt(4,1)"><input type="radio" name="q4" value="1"> pertenece a</label>
+        <label class="quiz-opt" onclick="selectOpt(4,2)"><input type="radio" name="q4" value="2"> Nombre</label>
+        <label class="quiz-opt" onclick="selectOpt(4,3)"><input type="radio" name="q4" value="3"> Especie</label>
+      </div>
+      <div class="quiz-result" id="qr-4"></div>
+    </div>
+  </div>
+
+  <div class="actions" style="margin-top:1rem">
+    <button class="btn-primary" onclick="checkQuiz()"><i class="ti ti-check"></i> Ver resultados</button>
+    <button class="btn-secondary" onclick="resetQuiz()"><i class="ti ti-refresh"></i> Reiniciar</button>
+  </div>
+  <div class="quiz-score" id="quiz-score"></div>
+  <div class="nav-next" id="quiz-next" style="display:none;margin-top:1rem">
+    <button class="btn-primary" onclick="unlockAndGo(5)"><i class="ti ti-brain"></i> Ir a ¿Qué aprendimos?</button>
+  </div>
+</div>
+
+<!-- METACOGNICIÓN -->
+<div class="section" id="sec-5">
+  <p class="momento-title"><i class="ti ti-brain" style="color:var(--verde)"></i> Ticket de salida</p>
+  <p class="momento-sub">Antes de cerrar, tomá un momento para reflexionar sobre lo que aprendiste hoy.</p>
+
+  <div class="meta-q">
+    <label>1. ¿Qué aprendiste hoy que no sabías antes?</label>
+    <textarea id="meta-1" placeholder="Escribí con tus propias palabras..."></textarea>
+  </div>
+  <div class="meta-q">
+    <label>2. ¿Qué parte te resultó más difícil? ¿Por qué?</label>
+    <textarea id="meta-2" placeholder="Describí qué te costó y a qué crees que se debe..."></textarea>
+  </div>
+  <div class="meta-q">
+    <label>3. ¿Qué pregunta te quedó sin responder o algo que todavía no entendés bien?</label>
+    <textarea id="meta-3" placeholder="Si todo quedó claro, escribí qué te gustaría aprender después sobre este tema..."></textarea>
+  </div>
+  <div class="meta-q">
+    <label>4. ¿Cómo calificás tu nivel de comprensión del DER después de esta actividad?</label>
+    <div class="stars">
+      <span class="star" onclick="setStar(1)" id="star-1">★</span>
+      <span class="star" onclick="setStar(2)" id="star-2">★</span>
+      <span class="star" onclick="setStar(3)" id="star-3">★</span>
+      <span class="star" onclick="setStar(4)" id="star-4">★</span>
+      <span class="star" onclick="setStar(5)" id="star-5">★</span>
+    </div>
+    <p style="font-size:11px;color:var(--text2);margin-top:4px">1 = Muy confundido/a · 5 = Lo entendí muy bien</p>
+  </div>
+
+  <div class="print-box">
+    <div>
+      <p style="font-weight:600;color:var(--text);margin-bottom:6px">¡Último paso!</p>
+      <ol style="font-size:13px;color:var(--text2);line-height:2;padding-left:18px">
+        <li>Hacé clic en <strong>"Guardar como PDF"</strong></li>
+        <li>En la ventana que se abre, elegí <strong>Guardar como PDF</strong> (no imprimir)</li>
+        <li>Nombrá el archivo con tu nombre y apellido</li>
+        <li>Subilo a la tarea en <strong>Google Classroom</strong></li>
+      </ol>
+    </div>
+    <button class="btn-naranja" onclick="window.print()" style="white-space:nowrap;align-self:center"><i class="ti ti-printer"></i> Guardar como PDF</button>
+  </div>
+  <div style="margin-top:.8rem;background:var(--verde-claro);border:0.5px solid var(--verde-borde);border-radius:var(--radius-sm);padding:12px 16px;font-size:13px;color:var(--verde-txt);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:8px">
+      <i class="ti ti-brand-google" style="font-size:20px;flex-shrink:0"></i>
+      <span>Subí el PDF a la tarea <strong>"DER — Objeto de Aprendizaje"</strong> en Google Classroom</span>
+    </div>
+    <a href="https://classroom.google.com" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:var(--verde);color:#fff;border-radius:var(--radius-sm);font-size:12px;font-weight:600;text-decoration:none;white-space:nowrap">
+      <i class="ti ti-external-link"></i> Ir al Classroom
+    </a>
+  </div>
+</div>
+
+<script>
+// ---- NAVEGACIÓN ----
+//const UNLOCKED=[true,false,false,false,false,false];
+const UNLOCKED=[true,true,true,true,true,true];
+
+
+function goSection(n){
+  if(n===1 && document.getElementById('nombre-pdf').textContent === ""){
+    document.getElementById("completar").hidden = false;  
+    return;
+  } 
+  
+  if(!UNLOCKED[n]) return;
+  [0,1,2,3,4,5].forEach(i=>{
+    document.getElementById("sec-"+i).classList.toggle("visible",i===n);
+    const btn=document.getElementById("nav-"+i);
+    if(btn){btn.classList.remove("active");if(i===n)btn.classList.add("active");}
+  });
+  if(n===2) initStep1();
+}
+function unlockAndGo(n){
+  UNLOCKED[n]=true;
+  const btn=document.getElementById("nav-"+n);
+  if(btn) btn.classList.remove("locked");
+  goSection(n);
+}
+
+// ---- ACTIVIDAD ----
+const ITEMS=[
+  {id:"estudiante",label:"Estudiante",        type:"entidad", ok:true},
+  {id:"asignatura",label:"Asignatura",         type:"entidad", ok:true},
+  {id:"docente",   label:"Docente",            type:"entidad", ok:true},
+  {id:"colegio",   label:"Colegio",            type:"entidad", ok:false},
+  {id:"gestion",   label:"Gestión académica",  type:"entidad", ok:false},
+  {id:"informacion",label:"Información",       type:"entidad", ok:false},
+  {id:"secretaria",label:"Secretaría",         type:"entidad", ok:false},
+  {id:"inscribe",  label:"se inscribe en",     type:"relacion",ok:true},
+  {id:"dicta",     label:"es dictada por",     type:"relacion",ok:true},
+  {id:"gestiona",  label:"gestiona",           type:"relacion",ok:false},
+  {id:"pertenece", label:"pertenece a",        type:"relacion",ok:false},
+  {id:"registra",  label:"registra",           type:"relacion",ok:false},
+  {id:"emite",     label:"emite",              type:"relacion",ok:false},
+];
+const ATTRS=[
+  {id:"nombre-1",label:"Nombre",group:"nombre"},{id:"nombre-2",label:"Nombre",group:"nombre"},{id:"nombre-3",label:"Nombre",group:"nombre"},
+  {id:"apellido-1",label:"Apellido",group:"apellido"},{id:"apellido-2",label:"Apellido",group:"apellido"},
+  {id:"dni-1",label:"DNI",group:"dni"},{id:"dni-2",label:"DNI",group:"dni"},
+  {id:"legajo-1",label:"Legajo",group:"legajo"},{id:"legajo-2",label:"Legajo",group:"legajo"},
+  {id:"codigo-1",label:"Código",group:"codigo"},{id:"anio-1",label:"Año",group:"anio"},
+  {id:"especialidad-1",label:"Especialidad",group:"especialidad"},
+  {id:"precio-1",label:"Precio",group:"precio"},{id:"stock-1",label:"Stock",group:"stock"},
+  {id:"ganancia-1",label:"Ganancia",group:"ganancia"},{id:"color-1",label:"Color",group:"color"},
+  {id:"marca-1",label:"Marca",group:"marca"},{id:"patente-1",label:"Patente",group:"patente"},
+  {id:"sabor-1",label:"Sabor",group:"sabor"},
+];
+const RULES=[
+  {group:"nombre",estudiante:1,asignatura:1,docente:1,none:0},
+  {group:"apellido",estudiante:1,asignatura:0,docente:1,none:0},
+  {group:"dni",estudiante:1,asignatura:0,docente:1,none:0},
+  {group:"legajo",estudiante:1,asignatura:0,docente:1,none:0},
+  {group:"codigo",estudiante:0,asignatura:1,docente:0,none:0},
+  {group:"anio",estudiante:0,asignatura:1,docente:0,none:0},
+  {group:"especialidad",estudiante:0,asignatura:0,docente:1,none:0},
+  {group:"precio",estudiante:0,asignatura:0,docente:0,none:1},
+  {group:"stock",estudiante:0,asignatura:0,docente:0,none:1},
+  {group:"ganancia",estudiante:0,asignatura:0,docente:0,none:1},
+  {group:"color",estudiante:0,asignatura:0,docente:0,none:1},
+  {group:"marca",estudiante:0,asignatura:0,docente:0,none:1},
+  {group:"patente",estudiante:0,asignatura:0,docente:0,none:1},
+  {group:"sabor",estudiante:0,asignatura:0,docente:0,none:1},
+];
+const CORRECT=["estudiante","asignatura","docente","inscribe","dicta"];
+const PAIRS=[["estudiante","inscribe","asignatura"],["asignatura","dicta","docente"]];
+const canvasNodes={};let draggingId=null,step1ok=false;
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function makeChip(item){const el=document.createElement("div");const cls=item.type==="entidad"?"chip-entidad":item.type==="relacion"?"chip-relacion":"chip-attr";const ico=item.type==="entidad"?"ti-square":item.type==="relacion"?"ti-diamond":"ti-tag-starred";el.className=`chip ${cls}`;el.id="chip-"+item.id;el.draggable=true;el.innerHTML=`<i class="ti ${ico}"></i>${item.label}`;el.addEventListener("dragstart",()=>{draggingId=item.id;setTimeout(()=>el.classList.add("dragging"),0);});el.addEventListener("dragend",()=>el.classList.remove("dragging"));el.addEventListener("touchstart",ts,{passive:true});el.addEventListener("touchmove",tm,{passive:false});el.addEventListener("touchend",te);return el;}
+function makeAttrChip(attr){const el=document.createElement("div");el.className="chip chip-attr";el.id="chip-"+attr.id;el.draggable=true;el.dataset.attrId=attr.id;el.dataset.group=attr.group;el.innerHTML=`<i class="ti ti-tag-starred"></i>${attr.label}`;el.addEventListener("dragstart",()=>{draggingId=attr.id;setTimeout(()=>el.classList.add("dragging"),0);});el.addEventListener("dragend",()=>el.classList.remove("dragging"));el.addEventListener("touchstart",ts,{passive:true});el.addEventListener("touchmove",tm,{passive:false});el.addEventListener("touchend",te);return el;}
+function initStep1(){["pool-entidades","pool-relaciones","pool-nope"].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML="";});const c=document.getElementById("canvas");if(c)c.querySelectorAll(".canvas-node").forEach(n=>n.remove());const svg=document.getElementById("svg-lines");if(svg)svg.innerHTML="";const ce=document.getElementById("canvas-empty");if(ce)ce.style.display="flex";Object.keys(canvasNodes).forEach(k=>delete canvasNodes[k]);step1ok=false;lockStep2();const ct=document.getElementById("cuentito");if(ct)ct.style.display="none";shuffle(ITEMS).forEach(item=>{const pid=item.type==="entidad"?"pool-entidades":item.type==="relacion"?"pool-relaciones":"pool-nope";const pool=document.getElementById(pid);if(pool)pool.appendChild(makeChip(item));});showFeedback("fb1","","");}
+function lockStep2(){const btn=document.getElementById("btn-step2");if(!btn)return;btn.classList.remove("done","active");btn.classList.add("locked");btn.innerHTML=`<i class="ti ti-lock"></i> Paso 2 — Atributos`;}
+function unlockStep2(){const btn=document.getElementById("btn-step2");if(!btn)return;btn.classList.remove("locked");btn.classList.add("done");btn.innerHTML=`<i class="ti ti-tag"></i> Paso 2 — Atributos`;}
+function tryGoStep2(){if(!step1ok){showFeedback("fb1","Primero completá y verificá el paso 1.","warn");return;}goStep(2);}
+function canvasOver(e){e.preventDefault();document.getElementById("canvas")?.classList.add("drag-over");}
+function canvasLeave(e){document.getElementById("canvas")?.classList.remove("drag-over");}
+function canvasDrop(e){e.preventDefault();document.getElementById("canvas")?.classList.remove("drag-over");if(!draggingId)return;const item=ITEMS.find(i=>i.id===draggingId);if(!item||canvasNodes[draggingId])return;document.getElementById("canvas-empty").style.display="none";const rect=document.getElementById("canvas").getBoundingClientRect();const x=Math.max(10,Math.min(e.clientX-rect.left-40,rect.width-120));const y=Math.max(10,Math.min(e.clientY-rect.top-20,rect.height-60));placeNode(item,x,y);const chip=document.getElementById("chip-"+draggingId);if(chip)chip.style.opacity="0.35";draggingId=null;}
+function placeNode(item,x,y){const canvas=document.getElementById("canvas");const el=document.createElement("div");el.className="canvas-node";el.id="node-"+item.id;el.style.left=x+"px";el.style.top=y+"px";let inner;if(item.type==="entidad")inner=`<div class="node-entity">${item.label}</div>`;else if(item.type==="relacion")inner=`<div class="node-relation"><div class="node-relation-text">${item.label}</div></div>`;else inner=`<div class="node-entity" style="background:var(--rojo-claro);border-color:var(--rojo-borde);color:var(--rojo-txt)">${item.label}</div>`;el.innerHTML=inner+`<button class="node-delete" onclick="removeNode('${item.id}')">x</button>`;makeDraggableNode(el);canvas.appendChild(el);canvasNodes[item.id]={item,el,x,y};drawLines();}
+function removeNode(id){const n=canvasNodes[id];if(!n)return;n.el.remove();delete canvasNodes[id];const chip=document.getElementById("chip-"+id);if(chip)chip.style.opacity="1";drawLines();if(!Object.keys(canvasNodes).length)document.getElementById("canvas-empty").style.display="flex";}
+function makeDraggableNode(el){el.addEventListener("mousedown",e=>{if(e.target.classList.contains("node-delete"))return;const ox=e.clientX-parseInt(el.style.left),oy=e.clientY-parseInt(el.style.top);const move=ev=>{const r=document.getElementById("canvas").getBoundingClientRect();const nx=Math.max(0,Math.min(ev.clientX-ox,r.width-el.offsetWidth));const ny=Math.max(0,Math.min(ev.clientY-oy,r.height-el.offsetHeight));el.style.left=nx+"px";el.style.top=ny+"px";const id=el.id.replace("node-","");if(canvasNodes[id]){canvasNodes[id].x=nx;canvasNodes[id].y=ny;}drawLines();};const up=()=>{document.removeEventListener("mousemove",move);document.removeEventListener("mouseup",up);};document.addEventListener("mousemove",move);document.addEventListener("mouseup",up);e.preventDefault();});}
+function drawLines(){const svg=document.getElementById("svg-lines");if(!svg)return;svg.innerHTML="";PAIRS.forEach(([e1,rel,e2])=>{const ne=canvasNodes[e1],nr=canvasNodes[rel],ne2=canvasNodes[e2];if(!ne||!nr||!ne2)return;const cx1=ne.x+(ne.el.offsetWidth/2),cy1=ne.y+(ne.el.offsetHeight/2);const cx2=nr.x+30,cy2=nr.y+30;const cx3=ne2.x+(ne2.el.offsetWidth/2),cy3=ne2.y+(ne2.el.offsetHeight/2);svg.innerHTML+=`<line x1="${cx1}" y1="${cy1}" x2="${cx2}" y2="${cy2}" stroke="var(--verde-borde)" stroke-width="1.5"/>`;svg.innerHTML+=`<line x1="${cx2}" y1="${cy2}" x2="${cx3}" y2="${cy3}" stroke="var(--verde-borde)" stroke-width="1.5"/>`;});}
+function checkStep1(){if(!Object.keys(canvasNodes).length){showFeedback("fb1","Arrastrá al menos algunos elementos al lienzo primero.","warn");return;}if(Object.keys(canvasNodes).some(id=>!CORRECT.includes(id))){showFeedback("fb1","Hay elementos que no forman parte del modelo. Revisá el enunciado.","warn");return;}if(["estudiante","asignatura","docente"].some(id=>!canvasNodes[id])){showFeedback("fb1","Faltan entidades.","warn");return;}if(["inscribe","dicta"].some(id=>!canvasNodes[id])){showFeedback("fb1","Faltan relaciones.","warn");return;}showFeedback("fb1","¡Excelente! Mirá cómo se lee el DER y luego pasá al paso 2.","ok");document.getElementById("cuentito").style.display="block";step1ok=true;unlockStep2();document.getElementById("btn-step1").classList.add("done");}
+function resetStep1(){initStep1();}
+function showFeedback(id,msg,type){const el=document.getElementById(id);if(!el)return;el.textContent=msg;el.className="feedback"+(msg?" show":"")+(" "+type);}
+function goStep(n){document.getElementById("panel-step1").style.display=n===1?"block":"none";document.getElementById("panel-step2").style.display=n===2?"block":"none";document.getElementById("btn-step1").classList.toggle("active",n===1);if(n===2){document.getElementById("btn-step2").classList.add("active");initStep2();}else document.getElementById("btn-step2").classList.remove("active");}
+function makeSlot(entityId){const slot=document.createElement("div");slot.className="step2-target";slot.id="slot-"+entityId;slot.dataset.entity=entityId;slot.addEventListener("dragover",e=>{e.preventDefault();slot.classList.add("drag-over");});slot.addEventListener("dragleave",()=>slot.classList.remove("drag-over"));slot.addEventListener("drop",e=>{e.preventDefault();slot.classList.remove("drag-over");if(!draggingId)return;const attr=ATTRS.find(a=>a.id===draggingId);if(!attr)return;const ex=document.getElementById("chip-"+draggingId);if(ex)ex.remove();slot.appendChild(makeAttrChip(attr));draggingId=null;});return slot;}
+function initStep2(){const canvas=document.getElementById("step2-canvas");canvas.innerHTML="";document.getElementById("pool-attrs").innerHTML="";["estudiante","asignatura","docente"].forEach(eid=>{const item=ITEMS.find(i=>i.id===eid);const wrap=document.createElement("div");wrap.className="step2-wrap";wrap.innerHTML=`<div class="step2-node">${item.label}</div>`;wrap.appendChild(makeSlot(eid));canvas.appendChild(wrap);});const nw=document.createElement("div");nw.className="step2-wrap";nw.innerHTML=`<div style="font-size:11px;color:var(--text2);margin-bottom:4px">No corresponde</div>`;const ns=makeSlot("none");ns.style.borderColor="var(--rojo-borde)";nw.appendChild(ns);canvas.appendChild(nw);shuffle([...ATTRS]).forEach(attr=>document.getElementById("pool-attrs").appendChild(makeAttrChip(attr)));showFeedback("fb2","","");}
+function checkStep2(){if(document.getElementById("pool-attrs").children.length>0){showFeedback("fb2","Todavía quedan atributos sin asignar.","warn");return;}const zones=["estudiante","asignatura","docente","none"];const counts={};zones.forEach(z=>{counts[z]={};const slot=document.getElementById("slot-"+z);if(!slot)return;slot.querySelectorAll(".chip").forEach(chip=>{const g=chip.dataset.group;counts[z][g]=(counts[z][g]||0)+1;});});let allOk=true;const wrongGroups=[];RULES.forEach(rule=>{zones.forEach(z=>{const actual=counts[z][rule.group]||0;if(actual!==rule[z]){allOk=false;if(!wrongGroups.includes(rule.group))wrongGroups.push(rule.group);}});});ATTRS.forEach(attr=>{const chip=document.getElementById("chip-"+attr.id);if(!chip)return;const ok=!wrongGroups.includes(attr.group);chip.style.background=ok?"var(--verde-claro)":"var(--rojo-claro)";chip.style.borderColor=ok?"var(--verde-borde)":"var(--rojo-borde)";chip.style.color=ok?"var(--verde-txt)":"var(--rojo-txt)";});if(allOk){
+  showFeedback("fb2","¡Excelente! Todos los atributos están bien ubicados.","ok");
+  UNLOCKED[3]=true;
+  const btn=document.getElementById("nav-3");
+  if(btn) btn.classList.remove("locked");
+  const btnSig=document.getElementById("btn-siguiente-prod");
+  if(btnSig) btnSig.style.display="inline-flex";
+}else showFeedback("fb2","Revisá los atributos marcados en rojo.","warn");}
+function resetStep2(){initStep2();}
+
+// ---- PRODUCCIÓN ----
+// Sync entity names to attribute headers
+[0,1,2].forEach(i=>{
+  document.getElementById("ent-name-"+i).addEventListener("input",function(){
+    const label=document.getElementById("attr-label-"+i);
+    if(label) label.textContent=this.value||"(completá el nombre arriba)";
+  });
+});
+let attrCounts=[3,3,3];
+function addAttr(entityIdx){
+  const n=attrCounts[entityIdx]++;
+  const row=document.createElement("div");row.className="attr-row";
+  row.innerHTML=`<input placeholder="Atributo ${n+1}" id="attr-${entityIdx}-${n}"/>`;
+  document.getElementById("attr-rows-"+entityIdx).appendChild(row);
+}
+
+function validarProduccion(){
+  const situacion = document.getElementById("prod-situacion")?.value.trim();
+  const ent0 = document.getElementById("ent-name-0")?.value.trim();
+  const ent1 = document.getElementById("ent-name-1")?.value.trim();
+  const ent2 = document.getElementById("ent-name-2")?.value.trim();
+  const relaciones = document.getElementById("prod-relaciones")?.value.trim();
+  const fb = document.getElementById("fb-prod");
+
+  if(!situacion){
+    fb.textContent = "Describí la situación que querés modelar antes de continuar.";
+    fb.className = "feedback show warn"; return;
+  }
+  if(!ent0 || !ent1 || !ent2){
+    fb.textContent = "Completá el nombre de las 3 entidades antes de continuar.";
+    fb.className = "feedback show warn"; return;
+  }
+  if(!relaciones){
+    fb.textContent = "Describí al menos las relaciones entre las entidades antes de continuar.";
+    fb.className = "feedback show warn"; return;
+  }
+  fb.className = "feedback";
+  unlockAndGo(4);
+}
+
+// ---- EVALUACIÓN ----
+const ANSWERS=[1,2,3,2,1];
+const EXPLANATIONS=[
+  "Correcto. Una entidad es algo concreto del mundo real — un sustantivo — sobre lo que el sistema necesita guardar información.",
+  "Correcto. 'Compra' es un verbo que conecta dos entidades (como Cliente y Producto), por eso es una relación. Nombre y Precio son atributos; Cliente es una entidad.",
+  "Correcto. 'Título' es un atributo de la entidad Libro, no una entidad en sí misma. Las entidades son Libro, Lector y Préstamo.",
+  "Correcto. Distintas entidades pueden tener atributos con el mismo nombre si representan datos propios de cada una (por ejemplo, Nombre en Cliente y Nombre en Producto).",
+  "Correcto. 'Pertenece a' es un verbo que conecta Mascota con Dueño — eso es una relación. Mascota, Nombre y Especie son entidad y atributos respectivamente.",
+];
+const selectedAnswers=[-1,-1,-1,-1,-1];
+function selectOpt(q,opt){
+  selectedAnswers[q]=opt;
+  document.querySelectorAll(`[name="q${q}"]`).forEach((radio,i)=>{
+    const label=radio.closest(".quiz-opt");
+    label.classList.toggle("selected",i===opt);
+  });
+}
+function checkQuiz(){
+  let score=0;
+  [0,1,2,3,4].forEach(q=>{
+    const sel=selectedAnswers[q];
+    const correct=ANSWERS[q];
+    const result=document.getElementById("qr-"+q);
+    document.querySelectorAll(`[name="q${q}"]`).forEach((radio,i)=>{
+      const label=radio.closest(".quiz-opt");
+      label.classList.remove("selected","correct","wrong");
+      if(i===correct) label.classList.add("correct");
+      else if(i===sel&&sel!==correct) label.classList.add("wrong");
+    });
+    if(sel===correct){score++;result.className="quiz-result ok";result.textContent="✓ "+EXPLANATIONS[q];}
+    else{result.className="quiz-result err";result.textContent="✗ La respuesta correcta es la opción "+(correct+1)+". "+EXPLANATIONS[q];}
+  });
+  const scoreEl=document.getElementById("quiz-score");
+  scoreEl.style.display="block";
+  scoreEl.textContent=`Resultado: ${score}/5 ${score===5?"¡Perfecto!":score>=3?"¡Muy bien!":"Repasá la teoría y volvé a intentarlo."}`;
+  document.getElementById("quiz-next").style.display="flex";
+}
+function resetQuiz(){
+  [0,1,2,3,4].forEach(q=>{selectedAnswers[q]=-1;document.getElementById("qr-"+q).className="quiz-result";document.getElementById("qr-"+q).textContent="";document.querySelectorAll(`[name="q${q}"]`).forEach(r=>{r.checked=false;r.closest(".quiz-opt").classList.remove("selected","correct","wrong");});});
+  document.getElementById("quiz-score").style.display="none";
+  document.getElementById("quiz-next").style.display="none";
+}
+
+// ---- METACOGNICIÓN ----
+let starVal=0;
+function setStar(n){
+  starVal=n;
+  [1,2,3,4,5].forEach(i=>document.getElementById("star-"+i).classList.toggle("active",i<=n));
+}
+
+const alumnoInput = document.getElementById("alumno");
+
+if(alumnoInput){
+  const fecha = new Date().toLocaleDateString("es-AR");
+  // Mostrar fecha en header desde el inicio
+  const headerFecha = document.getElementById("header-fecha");
+  if(headerFecha) headerFecha.textContent = fecha;
+  // fecha-pdf para impresión
+  const fechaPdf = document.getElementById("fecha-pdf");
+  if(fechaPdf) fechaPdf.textContent = fecha;
+
+  alumnoInput.addEventListener("input", () => {
+    document.getElementById("nombre-pdf").textContent =
+      alumnoInput.value || "________________";
+    // Ocultar aviso si ya escribió algo
+    const aviso = document.getElementById("completar");
+    if(aviso) aviso.hidden = alumnoInput.value.trim().length > 0;
+  });
+}
+
+function empezar(){
+  const alumno = document.getElementById("alumno");
+  const aviso = document.getElementById("completar");
+  if(!alumno || alumno.value.trim() === ""){
+    if(aviso) aviso.hidden = false;
+    alumno.focus();
+    alumno.style.outline = "2px solid #e87722";
+    alumno.style.borderRadius = "4px";
+    setTimeout(() => { alumno.style.outline = ""; }, 2000);
+    return;
+  }
+  if(aviso) aviso.hidden = true;
+  // Desbloquear Teoría
+  UNLOCKED[1] = true;
+  const btnTeo = document.getElementById("nav-1");
+  if(btnTeo) btnTeo.classList.remove("locked");
+  // Mostrar nombre en el header (fecha ya está)
+  const nombre = alumno.value.trim();
+  const headerNombre = document.getElementById("header-nombre");
+  if(headerNombre){
+    headerNombre.textContent = nombre;
+    headerNombre.style.display = "block";
+  }
+  goSection(1);
+}
+
+// ---- TOUCH ----
+let tCard=null,tClone=null,tox=0,toy=0;
+function ts(e){tCard=e.currentTarget;const r=tCard.getBoundingClientRect(),t=e.touches[0];tox=t.clientX-r.left;toy=t.clientY-r.top;tClone=tCard.cloneNode(true);tClone.style.cssText=`position:fixed;opacity:.85;pointer-events:none;z-index:9999;width:${r.width}px;`;document.body.appendChild(tClone);draggingId=tCard.dataset.attrId||tCard.id.replace("chip-","");}
+function tm(e){e.preventDefault();const t=e.touches[0];if(tClone){tClone.style.left=(t.clientX-tox)+"px";tClone.style.top=(t.clientY-toy)+"px";}}
+function te(e){if(tClone){document.body.removeChild(tClone);tClone=null;}if(!tCard||!draggingId)return;const t=e.changedTouches[0];const canvas=document.getElementById("canvas");if(canvas&&canvas.offsetParent!==null){const r=canvas.getBoundingClientRect();if(t.clientX>=r.left&&t.clientX<=r.right&&t.clientY>=r.top&&t.clientY<=r.bottom){const item=ITEMS.find(i=>i.id===draggingId);if(item&&!canvasNodes[draggingId]){placeNode(item,Math.max(10,t.clientX-r.left-40),Math.max(10,t.clientY-r.top-20));document.getElementById("canvas-empty").style.display="none";const chip=document.getElementById("chip-"+draggingId);if(chip)chip.style.opacity="0.35";}tCard=null;draggingId=null;return;}}for(const slot of document.querySelectorAll(".step2-target")){const r=slot.getBoundingClientRect();if(t.clientX>=r.left&&t.clientX<=r.right&&t.clientY>=r.top&&t.clientY<=r.bottom){const attr=ATTRS.find(a=>a.id===draggingId);if(attr){const ex=document.getElementById("chip-"+draggingId);if(ex)ex.remove();slot.appendChild(makeAttrChip(attr));}break;}}tCard=null;draggingId=null;}
+</script>
+</body>
+</html>
