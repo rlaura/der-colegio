@@ -323,6 +323,35 @@ Por eso, antes de construir un DER es necesario interpretar el significado del t
     </div>
     <p style="font-size:11px;color:var(--text2);margin-top:10px;text-align:center">"Un <em>dueño</em> <em>tiene</em> mascotas, que son <em>atendidas por</em> un veterinario."</p>
   </div>
+   <!-- AUDIO Y VIDEO -->
+  <div style="margin-bottom:1rem;display:flex;flex-direction:column;gap:10px">
+
+    <!-- Audio -->
+    <div style="border:0.5px solid var(--verde-borde);border-radius:var(--radius);padding:14px 16px;background:var(--verde-claro)">
+      <div style="font-size:12px;font-weight:600;color:var(--verde-txt);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px;display:flex;align-items:center;gap:6px">
+        <i class="ti ti-headphones" style="font-size:15px"></i> Audio explicativo
+      </div>
+      <!-- Reemplazá la URL de src con el archivo de audio que quieras usar -->
+      <audio controls style="width:100%;border-radius:6px;accent-color:var(--verde)">
+        <source src="audio.mp3" type="audio/mpeg">
+        Tu navegador no soporta audio HTML5.
+      </audio>
+      <p style="font-size:11px;color:var(--verde-txt);margin-top:8px;opacity:.75">Escuchá esta explicación complementaria sobre los DER antes de continuar.</p>
+    </div>
+
+    <!-- Video YouTube -->
+    <div style="border:0.5px solid var(--naranja-borde);border-radius:var(--radius);padding:14px 16px;background:var(--naranja-claro)">
+      <div style="font-size:12px;font-weight:600;color:var(--naranja-txt);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px;display:flex;align-items:center;gap:6px">
+        <i class="ti ti-brand-youtube" style="font-size:15px"></i> Video de apoyo
+      </div>
+   
+      <a href="https://www.youtube.com/watch?v=TKuxYHb-Hvc" target="_blank"
+         style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:var(--naranja);border-radius:var(--radius-sm);color:#fff;font-size:13px;font-weight:600;text-decoration:none">
+        <i class="ti ti-player-play" style="font-size:16px"></i> Ver video en YouTube
+      </a>
+      <p style="font-size:11px;color:var(--naranja-txt);margin-top:8px;opacity:.75">Se abre en una nueva pestaña.</p>
+    </div>
+
   <div class="nav-next">
     <button class="btn-primary" onclick="unlockAndGo(2)"><i class="ti ti-topology-star"></i> Ir a la actividad</button>
   </div>
@@ -599,8 +628,8 @@ Por eso, antes de construir un DER es necesario interpretar el significado del t
 
 <script>
 // ---- NAVEGACIÓN ----
-const UNLOCKED=[true,false,false,false,false,false];
-//const UNLOCKED=[true,true,true,true,true,true];
+//const UNLOCKED=[true,false,false,false,false,false];
+const UNLOCKED=[true,true,true,true,true,true];
 
 
 function goSection(n){
